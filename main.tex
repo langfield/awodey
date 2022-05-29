@@ -1,0 +1,617 @@
+\documentclass[12pt, reqno]{amsart}
+\usepackage{}
+\usepackage{amssymb}					% math symbols
+\usepackage{amsmath}					% basic math
+\usepackage{amsthm}						% theorem/lemma envs
+%\usepackage{mathabx}					% better-looking integrals
+
+\usepackage[
+	left=0.6in,
+	right=1.0in, 
+	top=0.6in, 
+	bottom=1in,
+	footskip=0.5in
+]
+{geometry}		% margin size
+%\usepackage{geometry}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[
+	bookmarks=true,
+	colorlinks=true, 
+	linkcolor=MidnightBlue, 
+	citecolor=cyan,
+]{hyperref}
+%\usepackage{verbatim}					% code
+%\usepackage{amsrefs}					% references
+\usepackage{enumitem}					% modified numbering
+\usepackage{tikz-cd}					% commutative diagrams
+\usepackage{braket}						% physics bra-ket notation
+\usetikzlibrary{cd}						% commutative diagrams
+%\usepackage{adjustbox}					% nice box env
+%\usepackage[all,cmtip]{xy}
+%\usepackage{pgfplots}					% math plots
+%\usepackage[english]{babel}
+%\usepackage[utf8x]{inputenc}				% encoding support
+%\usepackage[makeroom]{cancel}
+%\usepackage{imakeidx}					% index
+\usepackage{float}						% placing of figures
+\usepackage{booktabs}
+%\usepackage{soul}
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage[utf8]{inputenc}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{dsfont}
+\usepackage[skins,breakable,most]{tcolorbox}
+
+% BibTeX info
+
+
+
+\renewcommand{\subsectionmark}[1]{\markright{\thesubsection\ #1}}
+
+% ========= HeaderInfo ==========
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+% fancyplain gives first page as well
+\fancyhead{}
+\fancyhead[LE]{\nouppercase Grayson/Langfield}% LE -> Left part on Even pages
+\fancyhead[LO]{\nouppercase \today}% LE -> Left part on Odd pages
+\fancyhead[C]{\nouppercase Notes on Awodey's \textit{Category Theory} }% LE -> Left part on Odd pages
+\fancyhead[RO]{\nouppercase Grayson/Langfield}% RO -> Right part on Odd pages
+\fancyhead[RE]{\nouppercase \today}% RE -> Right part on Even pages
+
+% ===============================
+
+%\pgfplotsset{width=10cm,compat=1.9}		% plot hyperparameters
+\makeindex							% generate index
+
+
+\usepackage{xparse}
+
+\NewDocumentCommand{\newframedtheorem}{O{}momo}{%
+  \IfNoValueTF{#3}
+   {%
+    \IfNoValueTF{#5}
+     {\newtheorem{#2}{#4}}
+     {\newtheorem{#2}{#4}[#5]}%
+    }
+   {\newtheorem{#2}[#3]{#4}}
+  \tcolorboxenvironment{#2}{#1}%
+}
+
+\newframedtheorem{theorem}{Theorem}%[section]
+\theoremstyle{definition}
+\newframedtheorem[
+  enhanced jigsaw,
+  colback={white},
+  colframe=black,
+  boxrule=0.65pt,
+  sharp corners,
+]{Claim}[theorem]{Claim}
+
+%\newframedtheorem[
+%  enhanced jigsaw,
+%  colback={white},
+%  colframe=black,
+%  boxrule=1pt,
+%  sharp corners,
+%]{question}[theorem]{Question}
+
+\theoremstyle{definition}
+\numberwithin{theorem}{section}
+
+\newframedtheorem[
+  enhanced jigsaw,
+  colback={white},
+  colframe=black,
+  boxrule=0.65pt,
+  sharp corners,
+]{Def}[theorem]{Definition}
+
+\newframedtheorem[
+  enhanced jigsaw,
+  colback={white},
+  colframe=black,
+  boxrule=0.65pt,
+  sharp corners,
+]{e}[theorem]{Exercise}
+
+% Plain theorems
+\theoremstyle{plain}
+\newtheorem{Thm}{Theorem}
+\newtheorem{Prob}[Thm]{Problem}
+%\theoremstyle{definition}
+\newtheorem{Remark}[Thm]{Remark}
+\newtheorem{Tech}[Thm]{Technical Remark}
+%\newtheorem*{Claim}{Claim}
+%----------------------------------------
+%CHAPTER STUFF
+%\newtheorem{theorem}{Theorem}%[chapter]
+%\numberwithin{section}{chapter}
+%\numberwithin{equation}{section}
+%CHAPTER STUFF
+%----------------------------------------
+\newtheorem{lem}[theorem]{Lemma}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{Prop}[theorem]{Proposition}
+\newtheorem{Cor}[theorem]{Corollary}
+
+
+% Definition-style
+\theoremstyle{definition}
+%\newtheorem{Def}[theorem]{Definition}
+\newtheorem{Ex}[theorem]{Example}
+\newtheorem{xca}[theorem]{Exercise}
+
+% Remark-style
+\theoremstyle{remark}
+\newtheorem{rem}[theorem]{Remark}
+
+% NEW COMMANDS
+\newcommand{\Mod}[1]{\ (\text{mod}\ #1)}
+\newcommand{\norm}{\trianglelefteq}		% normal subgroup
+\newcommand{\propnorm}{\triangleleft}		% proper normal subgroup
+\newcommand{\semi}{\rtimes}				% semidirect product
+\newcommand{\sub}{\subseteq}				% subset
+\newcommand{\nsub}{\nsubseteq}			% not subset
+\newcommand{\fa}{\forall}				% for all/any quantifier
+\newcommand{\R}{\mathbb{R}}				% reals
+\newcommand{\z}{\mathbb{Z}}				% integers
+\newcommand{\n}{\mathbb{N}}				% naturals
+\newcommand{\Q}{\mathbb{Q}}				% rationals
+\renewcommand{\c}{\mathbb{C}}				% complex numbers
+\newcommand{\F}{\mathbb{F}}				% finite field
+\newcommand{\bb}{\vspace{3mm}}			% skip line
+\newcommand{\heart}{\ensuremath\heartsuit}
+\newcommand{\mc}{\mathcal}				% calligraphic script
+\newcommand{\bee}{\begin{equation}\begin{aligned}}
+\newcommand{\eee}{\end{aligned}\end{equation}}
+%\newcommand{\nequiv}{\not\equiv}			% not congruent
+% linear combinations
+\newcommand{\lc}[2]{#1_1 + \cdots + #1_{#2}}
+\newcommand{\lcc}[3]{#1_1 #2_1 + \cdots + #1_{#3} #2_{#3}}
+\newcommand{\ten}{\otimes} 				% tensor product
+\newcommand{\fracc}{\frac}				% fraction autocomplete
+\newcommand{\tens}{\otimes}				% tensor product 
+\newcommand{\lpar}{\left(}				% scalable parentheses
+\newcommand{\rpar}{\right)}				
+\newcommand{\floor}{\lfloor}				% floor
+\newcommand{\Tau}{\mc{T}}				% capital Tau
+\newcommand{\rank}{\text{rank}}			% rank
+\DeclareMathOperator{\coker}{coker}		% cokernel
+\newcommand*\pp{{\rlap{\('\)}}}
+\newcommand{\counter}{\setcounter}			% counter autocomplete
+\newcommand{\gal}{\text{Gal}}				% Galois group
+\newcommand{\aut}{\text{Aut}}				% automorphism group
+\newcommand{\fix}{\text{Fix}}				% fixed field
+\newcommand{\qwe}{\sqrt}					% square root
+\newcommand{\wer}{\sqrt}					% n-th root
+\newcommand{\tilda}{\tilde}				% tilda
+\newcommand{\ds}{\displaystyle}			% displaystyle shortcut
+\newcommand{\absl}{\left|}				% scalable abs val bars
+\newcommand{\absr}{\right|}
+\newcommand{\lbrac}{\left[}				% scalable brackets
+\newcommand{\rbrac}{\right]}
+\newcommand{\dx}{\text{d}x}				% common differentials
+\newcommand{\dt}{\text{d}t}			
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+% Arrow vector notation. 
+%\newcommand{\vecc}{\vec}
+% Bold vector notation. 
+\newcommand{\vecc}{\mathbf}
+\newcommand{\barr}{\bar}
+\newcommand{\D}{\partial}
+\newcommand{\comp}[1]{{#1}^\complement}	% set complement
+\newcommand{\textif}{\text{ if }}
+\newcommand{\indicator}{\mathds{1}}
+\newcommand{\cat}{\mathbf}
+\newcommand{\transpose}[1]{#1^{\mathsf{T}}}
+
+% RENEW COMMANDS
+\renewcommand{\leq}{\leqslant}			% prettier less equal
+\renewcommand{\geq}{\geqslant}			% prettier greater equal
+\renewcommand{\tt}{\text}				% text
+\renewcommand{\rm}{\normalshape}			% text inside math
+\renewcommand{\Re}{\operatorname{Re}}		% real part
+\renewcommand{\Im}{\operatorname{Im}}		% imaginary part
+\AtBeginDocument{\renewcommand{\bar}{\overline}}	% wider bar
+\renewcommand{\d}{\mathrm{d}}				% differential operator
+\renewcommand{\'}{\hspace{0.5mm}'}			% fix spacing for derivatives
+\renewcommand{\Set}[1]{\left\{\,#1\,\right\}}	% fix spacing for built-in \Set macro
+
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\inter}{\hspace{1mm}\small\circ}
+\newcommand{\interior}[1]{%
+  {\kern0pt#1}^{\hspace{0.5mm}\small\circ}%
+}
+\newcommand{\Nu}{\mathcal{V}}
+\newcommand{\hrul}{\vspace{3mm}\hrule\vspace{3mm}}
+\renewcommand{\d}{\hspace{0.3mm}\mathrm{d}}
+
+\let\temp\phi							% prettier phi
+\let\phi\varphi
+\let\phy\temp
+
+%\let\temp\epsilon						% prettier epsilon
+%\let\epsilon\varepsilon
+%\let\varepsilon\temp
+
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+\newtcolorbox{mybox}[1][]{enhanced jigsaw,breakable,pad at break=1mm,
+  oversize,left=8mm,interior hidden,colframe=red,nobeforeafter=,#1}
+
+
+\newcommand\note[2][]{\todo[inline, caption={2do}, color=ProcessBlue, #1]{
+\begin{minipage}{\textwidth-4pt}#2\end{minipage}}}
+
+%\note: inline
+%\todo: margin
+
+
+\begin{document}
+\thispagestyle{fancy}
+
+\tableofcontents
+
+\section{Categories}
+
+
+\begin{question}
+    What do we assume you know?
+\end{question}
+
+\begin{enumerate}
+    \item Familiarity with first-order logic. 
+    \item Experience in a proof-based mathematics course. 
+    \item Knowledge of basic proof techniques (Injective/Surjective functions, morphisms, induction, etc). 
+\end{enumerate}
+
+\setcounter{subsection}{1}
+\subsection{Functions of sets}
+
+Some important points: 
+
+\begin{itemize}
+    \item The mapping notation $f:A \to B$ does NOT imply surjectivity. 
+    \item Compositions exist. 
+    \item Function composition (on sets) is associative. 
+    \item Every set $A$ has an identity function $1_A$. 
+\end{itemize}
+
+\begin{e}
+	Draw the commutative diagram for composition of three functions ($f,g,h,i$) mapping between sets ($A,B,C,D,E$). Use the following TikZ editor if you need help with the \TeX~ syntax: \url{https://tikzcd.yichuanshen.de/}. 
+\end{e}
+
+\begin{center}
+	\begin{tikzcd}
+	A \arrow[r, "f"] \arrow[rd, "g \circ f"'] & B \arrow[d, "g"] \arrow[rd, "h \circ g"]  &                  \\
+	                                          & C \arrow[r, "h"] \arrow[rd, "i \circ h"'] & D \arrow[d, "i"] \\
+	                                          &                                           & E               
+	\end{tikzcd}
+\end{center}
+
+\begin{e}
+	What does it mean for a `diagram' to be commutative?
+\end{e}
+
+ Any pair of paths from object $A$ to object $B$ are equivalent, i.e. the compositions of arrows along the two paths are equal. 
+
+\subsection{Definition of a category}
+
+Put succinctly: A collection of \textbf{objects} and a collection of \textbf{arrows} where the arrows take the form $f:A \to B$, and $A,B$ are objects. We have a \textbf{composition} $g \circ f$ when $\mathrm{cod}(f) = \mathrm{dom}(g)$, where the composition operator is \textbf{associative}, and  \textbf{identity arrows} $1_A$, which function as \textbf{units}. 
+
+\begin{rem}
+    There is a reason we say \textit{collection} of objects/arrows instead of a set. Later on, we will encounter categories which are too ``large'' for their arrows and objects to fit into sets. An example of one such category is the category of all ``small'' categories. A formal definition for this will be given further in the text. 
+\end{rem}
+
+\subsection{Examples of categories}
+\bb
+~
+\bb
+
+\begin{e}
+	Prove that taking finite sets as objects and injective functions as arrows gives a category. 
+\end{e}
+
+\begin{proof}
+	We must show three things:
+	\begin{enumerate}
+		\item Composition is well-defined (the composition of two injective functions is injective).
+		\item Composition is associative. 
+		\item We have identity arrows. 
+	\end{enumerate}
+	So let $A,B,C$ be finite sets, and let $f:A \to B$, $g:B \to C$
+	be injective functions. Thus we know that $\forall a_1,a_2 \in A$, $f(a_1) = f(a_2) \Rightarrow a_1 = a_2$, and the same for images of elements of $B$ under $g$ in $C$. Now consider $h = g \circ f$. We wish to show that $h(a_1) = h(a_2) \Rightarrow a_1 = a_2$. Note that this tells us
+\bee
+	h(a_1) = g(f(a_1)) = g(f(a_2)) = h(a_2). 
+\eee
+Thus, from injectivity of $g$, we know $f(a_1) = f(a_2)$. Then injectivity of $f$ tells us $a_1 = a_2$, and we are done. 
+
+Next we show that composition is associative. This follows from the fact that function composition on sets is associative in general: $h \circ (g \circ f) = (h \circ g) \circ f = h(g(f))$. 
+
+Finally, we show that we have identity arrows. Note we already have identities in the sets and function setting, they are the usual suspects, $1_A$. Note that $1_A(a_1) = 1_A(a_2) \Rightarrow a_1 = a_2$ trivially, since $1_A(a) = a$. 
+\end{proof}
+
+\begin{e}
+	Give a counterexample (i.e. select a collection of one or more sets and functions) which demonstrates that the following definition does \textbf{not}, in general, give a category:
+	
+	\begin{quote}
+		Take sets as objects and as arrows, those $f:A \to B$ $:\forall b \in B$, $|f^{-1}(b) \sub A| \leq 2$, i.e. every preimage has cardinality at most $2$ (note that injectivity asserts that every preimage has cardinality at most $1$). 
+	\end{quote}
+\end{e}
+
+As a solution to the above exercise, let $A = \Set{1,2,3,4}$, $B = \Set{5,6}$, and $C \Set{7}$. Let $f:A \to B$ be given by 
+\bee
+f&:1 \mapsto 5; \\
+f&:2 \mapsto 5; \\
+f&:3 \mapsto 6; \\
+f&:4 \mapsto 6. \\
+\eee
+Then let $g:B \to C$ be given by 
+\bee
+g&: 5 \mapsto 7; \\
+g&: 6 \mapsto 7.
+\eee
+Note all the sets are finite, and the preimages of every element in the codomains of $f,g$ have cardinality at most $2$. Then consider $(g \circ f)^{-1}(7) = \Set{1,2,3,4} = A$. It has cardinality greater than $2$, and thus composition is not well-defined for this construction, since $g \circ f$ doesn't fit the definition of an arrow. Hence this is not a category. 
+
+\begin{e}
+	Prove or give a counterexample for the following statement: taking finite sets as objects and functions where the preimage of each element of the target space is finite gives a category. 
+\end{e}
+
+\begin{proof}
+	True. What must we check? Composition is well-defined because a finite union of finite sets is finite. Our identities are still the identity functions on each set, which give finite preimages. Associativity holds since it holds for functions on finite sets in general. Is this finished?
+\end{proof}
+
+\begin{e}
+	Prove or give a counterexample for the following statement: taking finite sets as objects and functions where the preimage of each element of the target space is infinite gives a category. 
+\end{e}
+
+We give a counterexample. Let $f:A \to B$ be an arrow this form. Then it must have an infinite preimage for each element of $B$, but this is impossible, since $A$ is finite. 
+
+\begin{e}
+	Is the graph of every category commutative?
+\end{e}
+
+No. Consider the graph of a monoid category. It has more than one unique self arrow for the token object, and so it cannot be commutative. 
+
+\begin{e}
+	Write out the composition rule for functors. 
+\end{e}
+
+\begin{e}
+	Trivia: what axiom is missing from the definition of a preorder to make it an \textit{equivalence relation}?
+\end{e}
+
+\begin{e}
+	Prove a preorder defines a category as defined in \#7 in Section 1.4. 
+\end{e}
+
+\begin{e}
+	What is the identity arrow $1_\phi$ on a formula $\phi$ in a deductive system of logic viewed as a category?
+\end{e}
+
+ The deduction of $\phi$ from itself. 
+ 
+\begin{question}
+	What is a functor between poset categories?
+\end{question}
+
+Let $F:\vecc{C} \to \vecc{D}$ be a functor 
+between poset categories. 
+Let $A,B$ be posets in $\vecc{C}$, and let $f:A \to B$ 
+be an arrow 
+between them. Then $f$ is a \textit{monotone} 
+function, as observed
+in Example 3 in Section 1.4 from Awodey. 
+So $F(f)$ must also be monotone? What does this mean? 
+What does composition tell us?
+
+\begin{Claim}
+	A monoid homomorphism from $M$ to $N$ is the same thing
+	as a functor from $M$ regarded as a category to $N$
+	regarded as a category. 
+\end{Claim}
+
+\begin{proof}
+	Let $M,N$ be monoids, and let $C_M,C_N$ be the associated
+	categories, constructed by taking a token object
+	in each (in fact, the only object), and associating
+	an arrow which maps from that object to itself 
+	with each element of $M,N$. The identity element of 
+	the monoid is exactly the identity arrow on the
+	associated category. 
+	
+	Awodey tells us that a homomorphism $h:M \to N$ 
+	is a function such that
+	\bee
+		h(m_1 \cdot_M m_2) &= h(m_1)\cdot_N h(m_2) ; \\
+		h(u_M) &= u_N,
+	\eee
+	where $m_1,m_2 \in M$, and $u_M$ is the identity on 
+	$M$, and $u_N$ is defined analogously. We wish
+	to show that $h$, considered as a mapping which
+	sends the only object in $M$ to the only object in $N$, 
+	and the arrow associated with $m \in M$ to 
+	the arrow associated with $h(M) \in N$, is
+	a functor from $C_M \to C_N$. Recall the definition of
+	a functor, stated below. 
+	\begin{Def}
+		A \textbf{functor} 
+		\bee
+			F:\vecc{C} \to \vecc{D}
+		\eee
+		between categories $\vecc{C}$ and $\vecc{D}$
+		is a mapping of objects to objects and arrows to
+		arrows in such a way that:
+		\begin{enumerate}[label=(\alph*)]
+			\item $F(f:A \to B) = F(f):F(A) \to F(B)$;
+			\item $F(g \circ f) = F(g) \circ F(f)$;
+			\item $F(1_A) = 1_{F(A)}$. 
+		\end{enumerate}
+	\end{Def}
+	We first show that (a) makes sense. 
+	So our homomorphism $h$ maps an element $m \in M$
+	to $n \in N$. Let $O_M$ be the object for 
+	$\vecc{C}_M$ and $O_N$ defined analogously. Then
+	the arrow $f$ associated with $m$
+	is such that $f:O_M \to O_M$ and if 
+	$F_h$ is the functor associated with $h$, 
+	then $F_h(f):O_N \to O_N$. So we are good here. 
+	Note (b) and (c) follow exactly by simply 
+	translating the names of the symbols in the 
+	language of monoids to the language of categories:
+	they are the same properties as in the definition
+	of a homomorphism. 
+\end{proof}
+
+
+\counter{subsection}{8}
+
+\subsection{Exercises}
+
+\bb
+~
+\bb
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+
+\begin{mybox}
+\item The graph $\mathbf{Rel}$ is a category. 
+\end{mybox}
+
+\begin{proof}
+	Recall the definition of a category. We are
+	given that sets are the objects, and binary relations
+	are the arrows. We are given the identity relation
+	\bee
+		1_A = \Set{(a,a) \in A \times A:a \in A}\sub 
+		A \times A. 
+	\eee
+	We define composition of the relations 
+	$S \sub A \times B$ and $R \sub B \times C$ 
+	by
+	\bee
+		S \circ R = \Set{(a,c) \in A \times C: 
+		\exists b \text{ s.t. } (a,b) \in R, (b,c) \in S}. 
+	\eee
+	Note that composition is not well-defined 
+	between any two binary relations, just
+	as function composition is not well-defined
+	between any two functions. We must have that
+	the codomain of the first is the domain of
+	the second. We need only check \textbf{associativity}, 
+	and that the identity relation 
+	functions as a \textbf{unit}. 
+	Let $S \sub A \times B$, $R \sub B \times C$ and 
+	$T \sub C \times D$ be binary relations. Then
+	\bee
+		R \circ T = \Set{(b,d) \in B \times D: 
+		\exists c \text{ s.t. } (b,c) \in R, (c,d) \in S}. 
+	\eee
+	So 
+	\bee
+		E &= S \circ (R \circ T) \\
+		&= 
+		\Set{(a,d) \in A \times D: 
+		\exists b \text{ s.t. } (a,b) \in R, (b,d) 
+		\in R \circ T}.
+	\eee
+	And likewise, we have
+	\bee
+		F &= (S \circ R) \circ T \\
+		&= 
+		\Set{(a,d) \in A \times D: 
+		\exists c \text{ s.t. } (a,c) \in S \circ R, (c,d) 
+		\in T}.
+	\eee
+	We wish to show 
+	$E = S \circ (R \circ T) = (S \circ R) \circ T = F$. 
+	Let $(a,d) \in E$. So there must be some $b_0 \in B$
+	such that $(a,b_0) \in R$ and $(b_0,d) \in R \circ T$. And
+	by the definition of $R \circ T$, we know that
+	there exists $c_0 \in C$ such that
+	$(b,c_0) \in R$ and $(c_0,d) \in S$. So we have 
+	a $c$ (in particular, $c_0$) for which $(c,d) \in S$. We 
+	wish to show
+	that $(a,c_0) \in S \circ R$ to satisfy the definition
+	of $F$. Recall that
+	\bee
+		S \circ R = \Set{(a,c) \in A \times C: 
+		\exists b \text{ s.t. } (a,b) \in S, (b,c) \in R}. 
+	\eee
+	But we can use $b_0$ for exactly this purpose, since
+	we know $(a,b_0) \in R$ and $(b_0,c) \in S$. So 
+	we must have $(a,c) \in S \circ R$, and so
+	$(a,d) \in F$. Repeating the argument more or less
+	in reverse, first constructing $c_0$ from
+	the definition of $F$ and then $b_0$ from
+	$S \circ R$, we get the other inclusion, so $E = F$,
+	and we are done. 
+	
+	Now we show that $1_A$ is a unit on $A$. First
+	let $S \sub Z \times A$
+	be a binary relation. We wish to show
+	that $S \circ 1_A = S$ and $1_Z \circ S = S$. But note
+	\bee\label{unitcomp1}
+		S \circ 1_A = \Set{(z,a) \in Z \times A: 
+		\exists a_0 \in A \text{ s.t. } (z,a_0) 
+		\in S, (a_0,a) \in 1_A}. 
+	\eee
+	The inclusion $S \circ 1_A \sub S$ we prove by observing
+	that if $(a_0,a) \in 1_A$, then we must have $a_0 = a$, 
+	since inclusion in $1_A$ asserts equality. Then we know
+	that $(z,a_0) = (z,a) \in S$, which is what we wanted. 
+	We wish to prove $S \sub S \circ 1_A$. So let
+	$(z,a) \in S$. Then take $a_0 = a$, and note that
+	$(z,a_0) = (z,a) \in S$ by construction, and 
+	$(a_0,a_0) = (a,a) \in 1_A$ by definition of $1_A$. So
+	we have found an $a_0$ such that $(z,a)$ satisfies
+	the condition in (\ref{unitcomp1}). Thus $S\circ 1_A = S$. 
+	To show that $1_Z \circ S = S$, observe
+	\bee
+		1_Z \circ S = \Set{(z,a) \in Z \times A: \exists 
+		z_0 \in Z \text{ s.t. } (z,z_0) \in 1_Z, (z_0,a) \in S}. 
+	\eee
+	Taking $z_0 = z$ and following the proof for the previous
+	equality yields the result. 
+\end{proof}
+
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
